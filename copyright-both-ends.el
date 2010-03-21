@@ -1,9 +1,9 @@
 ;;; copyright-both-ends.el --- update copyright at start and end of file
 
-;; Copyright 2008, 2009 Kevin Ryde
+;; Copyright 2008, 2009, 2010 Kevin Ryde
 
 ;; Author: Kevin Ryde <user42@zip.com.au>
-;; Version: 2
+;; Version: 3
 ;; Keywords: tools
 ;; URL: http://user42.tuxfamily.org/copyright-both-ends/index.html
 ;; EmacsWiki: CopyrightUpdate
@@ -52,8 +52,13 @@
 ;; Version 1 - the first version
 ;; Version 2 - one end when copyright-at-end-flag not available
 ;;           - message if base copyright-update not available at all
+;; Version 3 - defvars to quieten the byte compiler
 
 ;;; Code:
+
+;; in copyright.el, but only when that package is available, so defvar instead
+(defvar copyright-update)
+(defvar copyright-at-end-flag)
 
 ;;;###autoload
 (defun copyright-both-ends-update ()
@@ -81,6 +86,7 @@ your home directory
       (when (string-match (concat \"\\`\" (regexp-quote
                                          (expand-file-name \"~/\")))
                           (buffer-file-name))
+        (make-local-hook 'before-save-hook) ;; for xemacs
         (add-hook 'before-save-hook 'copyright-both-ends-update
                   nil
                   t))) ;; buffer-local
