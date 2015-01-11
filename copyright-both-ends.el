@@ -1,10 +1,10 @@
 ;;; copyright-both-ends.el --- update copyright at start and end of file
 
-;; Copyright 2008, 2009, 2010 Kevin Ryde
+;; Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014 Kevin Ryde
 
 ;; Author: Kevin Ryde <user42@zip.com.au>
-;; Version: 3
-;; Keywords: tools
+;; Version: 4
+;; Keywords: tools, copyright
 ;; URL: http://user42.tuxfamily.org/copyright-both-ends/index.html
 ;; EmacsWiki: CopyrightUpdate
 
@@ -53,6 +53,7 @@
 ;; Version 2 - one end when copyright-at-end-flag not available
 ;;           - message if base copyright-update not available at all
 ;; Version 3 - defvars to quieten the byte compiler
+;; Version 4 - in the sample code conditionalize make-local-hook
 
 ;;; Code:
 
@@ -83,10 +84,11 @@ try conditionalizing with say the following for only files under
 your home directory
 
     (defun my-enable-copyright-update ()
-      (when (string-match (concat \"\\`\" (regexp-quote
+      (when (string-match (concat \"\\=\\`\" (regexp-quote
                                          (expand-file-name \"~/\")))
                           (buffer-file-name))
-        (make-local-hook 'before-save-hook) ;; for xemacs
+        (if (fboundp 'make-local-hook)
+            (make-local-hook 'before-save-hook)) ;; for xemacs
         (add-hook 'before-save-hook 'copyright-both-ends-update
                   nil
                   t))) ;; buffer-local
@@ -111,6 +113,8 @@ won't do what's intended, but at least a common
 
 ;;;###autoload
 (custom-add-option 'before-save-hook 'copyright-both-ends-update)
+
+;; LocalWords: conditionalizing docstring
 
 (provide 'copyright-both-ends)
 
