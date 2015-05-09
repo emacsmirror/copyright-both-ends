@@ -1,9 +1,9 @@
 ;;; copyright-both-ends.el --- update copyright at start and end of file
 
-;; Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014 Kevin Ryde
+;; Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015 Kevin Ryde
 
-;; Author: Kevin Ryde <user42@zip.com.au>
-;; Version: 4
+;; Author: Kevin Ryde <user42_kevin@yahoo.com.au>
+;; Version: 5
 ;; Keywords: tools, copyright
 ;; URL: http://user42.tuxfamily.org/copyright-both-ends/index.html
 ;; EmacsWiki: CopyrightUpdate
@@ -24,9 +24,10 @@
 
 ;;; Commentary:
 
-;; `copyright-both-ends-update' does a `copyright-update' to update a
-;; copyright notice you might have at both the start and end of a file.
-;; See the docstring below for more.
+;; `copyright-both-ends-update' updates a copyright notice at both start and
+;; end of a file using `copyright-update' with `copyright-at-end-flag' both
+;; true and false.  See the `copyright-both-ends-update' docstring for
+;; details.
 
 ;;; Install:
 
@@ -38,9 +39,8 @@
 ;; This makes M-x copyright-both-ends-update available, but see the
 ;; docstring for suggested `before-save-hook'.
 ;; 
-;; There's an autoload cookie below for the function, if you use
-;; `update-file-autoloads' and friends.  The hook is left as a
-;; customization.
+;; There's an autoload cookie for the function and custom option if you
+;; install via `M-x package-install' or know `update-file-autoloads'.
 
 ;;; Emacsen:
 
@@ -54,10 +54,11 @@
 ;;           - message if base copyright-update not available at all
 ;; Version 3 - defvars to quieten the byte compiler
 ;; Version 4 - in the sample code conditionalize make-local-hook
+;; Version 5 - new email
 
 ;;; Code:
 
-;; in copyright.el, but only when that package is available, so defvar instead
+;; in copyright.el, but only when that package is available, so defvar here
 (defvar copyright-update)
 (defvar copyright-at-end-flag)
 
@@ -65,14 +66,14 @@
 (defun copyright-both-ends-update ()
   "Update copyright years at both start and end of the buffer.
 This function calls `copyright-update' with
-`copyright-at-end-flag' set to true then to false, so if you've
-got a copyright in comments at the start then also inline in
+`copyright-at-end-flag' set to true then to false, so if you have
+a copyright in comments at the start then also inline in
 documentation at the end of the file then both are updated.
 
 Like function `copyright-update', an update is only done if the
 variable `copyright-update' says it hasn't already been done.
-Make sure you don't run the plain `copyright-update' before this
-both-ends one, or it'll look like the update has been done.
+Don't run the plain `copyright-update' before this both-ends one,
+or it'll look like the update has been done.
 
 `copyright-both-ends-update' can be added to `before-save-hook'
 to have an automatic update when saving any file
